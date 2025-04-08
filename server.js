@@ -1,55 +1,7 @@
-class Producto {
-    constructor(codigo, nombre) {
-        this.nombre = nombre;
-        this.codigo = codigo;
-    }
-}
-class Inventario {
-    constructor() {
-        this.productos = [];
-    }
-
-    agregar(producto) {
-        if(this.buscar(producto.codigo)){
-            return null
-        }else{
-        this.productos.push(producto);
-        return producto;
-        }
-    }
-
-    eliminar(codigo) {
-        let indice = this.buscarIndice(codigo);
-
-        if(indice !== -1) {
-            this.productos.splice(indice, 1);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    listarProductos() {
-        let res="";
-        this.productos.forEach(producto => {
-            res+=`Nombre: ${producto.nombre}, Codigo: ${producto.codigo}`;
-        });
-        return this.productos;
-    }
-    buscar(codigo) {
-        return this.productos.find(producto => producto.codigo === codigo);
-    }
-    buscarIndice(codigo){
-        return this.productos.findIndex(producto => producto.codigo === codigo);
-    }
-}
-
-let inv=new Inventario();
-inv.agregar(new Producto(0,"producto1"));
-inv.agregar(new Producto(1,"producto2"));
-inv.agregar(new Producto(2,"producto3"));
-
-
+// import { inv } from "./app_modules/inventario.js";
+// import { Producto } from "./app_modules/producto.js";
+const inv=require("./app_modules/inventario");
+const Producto=require("./app_modules/producto");
 const express=require("express");
 const cors = require("cors");
 const app = express()
@@ -62,9 +14,10 @@ app.get('/productos/:codigo',(req,res)=>{
     let resp=inv.buscar(codigo);
     console.log(resp);
     if(resp)
-        res.json({msg:"producto encontrado",producto:resp})
+        res.json({msg:"producto encontrado",producto:resp,tipo:1})
+        //puedo devolver un -1 o un 1, como si fuera un booleano
     else
-        res.json({msg:"No se encontro el producto"})
+        res.json({msg:"No se encontro el producto",tipo:-1})
 
 })
 //eliminar
@@ -73,9 +26,9 @@ app.delete('/productos/:codigo', (req, res) => {
     let resp = inv.eliminar(codigo);
     
     if (resp === false)
-        res.json({msg: false, error: "Producto no encontrado"})
+        res.json({msg: false, error: "Producto no encontrado",tipo:-1})
     else
-        res.json({msg: true, codigo: codigo})
+        res.json({msg: true, codigo: codigo,tipo:1})
 });
 //listar
 app.get('/productos',(req,res)=>{

@@ -29,7 +29,7 @@ btnBuscar.addEventListener('click', function() {
         .then(resp => {
             let divRespuesta = document.getElementById("divRespuesta");
             divRespuesta.innerHTML = "";
-            if (resp.msg ==="producto encontrado") {
+            if (resp.tipo ===1) {
                 divRespuesta.innerHTML = `<div class="alert alert-success">
                     <p class="mb-0"><strong>Código:</strong> ${resp.producto.codigo} <strong>Nombre:</strong> ${resp.producto.nombre}</p>
                 </div>`;
@@ -81,7 +81,7 @@ btnEliminar.addEventListener('click', function() {
     })
         .then(response => response.json())
         .then(resp => {
-            if(resp.msg === true) {
+            if(resp.codigo === 1) {
                 alert("Producto eliminado correctamente");
             }
             else {
