@@ -8,6 +8,9 @@ const app = express()
 app.use(express.json());
 app.use(cors());
 
+const router=require('./routes');
+app.use('api',router);
+
 //buscar
 app.get('/productos/:codigo',(req,res)=>{
     let codigo=parseInt(req.params.codigo);
